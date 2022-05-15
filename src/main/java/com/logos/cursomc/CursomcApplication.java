@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.logos.cursomc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,4 +10,4 @@ public class CursomcApplication {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
 
-}
+}	
