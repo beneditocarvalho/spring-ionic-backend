@@ -13,6 +13,7 @@ import com.logos.cursomc.domain.Cidade;
 import com.logos.cursomc.domain.Cliente;
 import com.logos.cursomc.domain.Endereco;
 import com.logos.cursomc.domain.Estado;
+import com.logos.cursomc.domain.ItemPedido;
 import com.logos.cursomc.domain.Pagamento;
 import com.logos.cursomc.domain.PagamentoComBoleto;
 import com.logos.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.logos.cursomc.repositories.CidadeRepository;
 import com.logos.cursomc.repositories.ClienteRepository;
 import com.logos.cursomc.repositories.EnderecoRepository;
 import com.logos.cursomc.repositories.EstadoRepository;
+import com.logos.cursomc.repositories.ItemPedidoRepository;
 import com.logos.cursomc.repositories.PagamentoRepository;
 import com.logos.cursomc.repositories.PedidoRepository;
 import com.logos.cursomc.repositories.ProdutoRepository;
@@ -33,28 +35,31 @@ import com.logos.cursomc.repositories.ProdutoRepository;
 public class CursomcApplication implements CommandLineRunner {
 
 	@Autowired
-	CategoriaRepository categoriaRepository;
+	private CategoriaRepository categoriaRepository;
 
 	@Autowired
-	ProdutoRepository produtoRepository;
+	private ProdutoRepository produtoRepository;
 
 	@Autowired
-	EstadoRepository estadoRepository;
+	private EstadoRepository estadoRepository;
 
 	@Autowired
-	CidadeRepository cidadeRepository;
+	private CidadeRepository cidadeRepository;
 
 	@Autowired
-	ClienteRepository clienteRepository;
+	private ClienteRepository clienteRepository;
 
 	@Autowired
-	EnderecoRepository enderecoRepository;
+	private EnderecoRepository enderecoRepository;
 	
 	@Autowired
-	PedidoRepository pedidoRepository;
+	private PedidoRepository pedidoRepository;
 	
 	@Autowired
-	PagamentoRepository pagamentoRepository;
+	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -77,6 +82,9 @@ public class CursomcApplication implements CommandLineRunner {
 		p1.getCategorias().addAll(Arrays.asList(cat1));
 		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategorias().addAll(Arrays.asList(cat1));
+		
+		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
@@ -118,6 +126,19 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 	}
 
